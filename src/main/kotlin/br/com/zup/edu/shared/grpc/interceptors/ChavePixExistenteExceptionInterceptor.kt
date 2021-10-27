@@ -1,6 +1,6 @@
 package br.com.zup.edu.shared.grpc.interceptors
 
-import br.com.zup.edu.pix.ChavePixExistenteException
+import br.com.zup.edu.pix.registra.ChavePixExistenteException
 import br.com.zup.edu.pix.registra.RegistraChaveEndpoint
 import br.com.zup.edu.shared.grpc.ErrorHandler
 import io.grpc.Status
@@ -9,6 +9,7 @@ import io.micronaut.aop.InterceptorBean
 import io.micronaut.aop.MethodInterceptor
 import io.micronaut.aop.MethodInvocationContext
 import jakarta.inject.Singleton
+import java.lang.IllegalStateException
 import javax.validation.ConstraintViolationException
 
 @Singleton
@@ -28,6 +29,8 @@ class ChavePixExistenteExceptionInterceptor : MethodInterceptor<RegistraChaveEnd
                 status = Status.ALREADY_EXISTS
             } else if(e is ConstraintViolationException){
                 status = Status.INVALID_ARGUMENT
+            } else if(e is IllegalStateException) {
+                status = Status.FAILED_PRECONDITION
             }
 
             return responseObserver.onError(status.withCause(e).withDescription(e.message).asRuntimeException())

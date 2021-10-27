@@ -6,6 +6,7 @@ import br.com.zup.edu.pix.ChavePixRepository
 import io.micronaut.validation.Validated
 import jakarta.inject.Inject
 import jakarta.inject.Singleton
+import java.lang.IllegalStateException
 import javax.transaction.Transactional
 import javax.validation.Valid
 
@@ -24,7 +25,7 @@ class NovaChavePixService(
         }
 
         val response = itauClient.buscaContaPorTipo(novaChave.clienteId!!, novaChave.tipoDeConta!!.name)
-        val conta = response.toModel()
+        val conta = response.body()?.toModel() ?: throw IllegalStateException("Cliente não encontrado no Itau")
 
         val chave = novaChave.toModel(conta)
         chavePixRepository.save(chave)

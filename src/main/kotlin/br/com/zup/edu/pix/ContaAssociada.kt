@@ -24,7 +24,12 @@ class ContaAssociada(
 
     @field:NotBlank
     @Column(nullable = false)
-    var numeroDaConta: String
+    var numeroDaConta: String,
+
 ) {
+
+    companion object {
+        val ITAU_UNIBANCO_ISPB: String = "60701190"
+    }
 
 }

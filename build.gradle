@@ -49,7 +49,8 @@ dependencies {
     implementation("io.micronaut.sql:micronaut-jdbc-hikari")
 
     testImplementation("io.micronaut:micronaut-http-client")
-
+    testImplementation("org.mockito:mockito-core")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:3.2.0")
 }
 
 
